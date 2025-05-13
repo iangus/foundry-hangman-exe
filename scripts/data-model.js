@@ -5,6 +5,72 @@ export const GameStatus = Object.freeze({
   Fail: "Fail",
 });
 
+export const GameState = Object.freeze([
+  `
+  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========
+`,
+  `
+  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========
+`,
+  `
+  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========
+`,
+  `
+  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========
+`,
+  `
+  +---+
+  |   |
+  O   |
+ /|\  |
+      |
+      |
+=========
+`,
+  `
+  +---+
+  |   |
+  O   |
+ /|\  |
+ /    |
+      |
+=========
+`,
+  `
+  +---+
+  |   |
+  O   |
+ /|\  |
+ / \  |
+      |
+=========
+`,
+]);
+
 const { StringField, SetField, NumberField } = foundry.data.fields;
 
 export class HangmanModel extends foundry.abstract.TypeDataModel {
@@ -55,14 +121,19 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
     };
   }
 
-  get guessCount() {
-    this.guessCount = this.guessedCharacters.size + this.guessedWords.size;
-  }
-
   /**
    * @override
    */
-  prepareBaseData() {}
+  prepareBaseData() {
+    if (this.incorrectGuesses >= GameState.length - 1) {
+      this.status = GameStatus.Fail;
+    } else if (
+      this.guessedWords.has(this.targetWord) ||
+      this.targetWord.split().every((char) => this.guessedCharacters.has(char))
+    ) {
+      this.status = GameStatus.Success;
+    }
+  }
 
   /**
    * @override

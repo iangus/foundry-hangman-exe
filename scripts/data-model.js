@@ -1,6 +1,51 @@
+export const GameStatus = Object.freeze({
+  NotStarted: "NotStarted",
+  InProgress: "InProgress",
+  Success: "Success",
+  Fail: "Fail",
+});
+
+const { StringField, SetField } = foundry.data.fields;
+
 export class HangmanModel extends foundry.abstract.TypeDataModel {
   static defineSchema() {
-    const fields = foundry.data.fields;
-    return {};
+    return {
+      targetWord: new StringField({
+        blank: false,
+        required: true,
+        label: "Target Word",
+        gmOnly: true,
+        trim: true,
+      }),
+      status: new StringField({
+        blank: false,
+        choices: GameStatus,
+        initial: GameStatus.NotStarted,
+        required: true,
+        label: "Game Status",
+      }),
+      guessedCharacters: new SetField(
+        new StringField({
+          blank: false,
+          trim: true,
+        }),
+        {
+          required: true,
+          initial: new Set(),
+          label: "Guessed Characters",
+        }
+      ),
+      guessedWords: new SetField(
+        new StringField({
+          blank: false,
+          trim: true,
+        }),
+        {
+          required: true,
+          initial: new Set(),
+          label: "Guessed Words",
+        }
+      ),
+    };
   }
 }

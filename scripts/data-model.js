@@ -5,7 +5,7 @@ export const GameStatus = Object.freeze({
   Fail: "Fail",
 });
 
-const { StringField, SetField } = foundry.data.fields;
+const { StringField, SetField, NumberField } = foundry.data.fields;
 
 export class HangmanModel extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -23,6 +23,12 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
         initial: GameStatus.NotStarted,
         required: true,
         label: "Game Status",
+      }),
+      incorrectGuesses: new NumberField({
+        required: true,
+        integer: true,
+        initial: 0,
+        nullable: false,
       }),
       guessedCharacters: new SetField(
         new StringField({
@@ -49,9 +55,20 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
     };
   }
 
+  get guessCount() {
+    this.guessCount = this.guessedCharacters.size + this.guessedWords.size;
+  }
+
+  /**
+   * @override
+   */
+  prepareBaseData() {}
+
+  /**
+   * @override
+   */
   prepareDerivedData() {
     this.wordLength = this.targetWord.length;
-    this.guessCount = this.guessedCharacters.size + this.guessedWords.size;
     this.display = this.targetWord
       .split()
       .map((char) => (this.guessedCharacters.has(char) ? char : "_"));

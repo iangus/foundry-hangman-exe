@@ -29,6 +29,11 @@
       "path": "languages/en.json"
     }
   ],
+  "documentTypes": {
+    "JournalEntryPage": {
+      "hangman": {}
+    }
+  },
   "url": "#{URL}#",
   "manifest": "#{MANIFEST}#",
   "download": "#{DOWNLOAD}#",

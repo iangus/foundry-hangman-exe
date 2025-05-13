@@ -19,7 +19,11 @@
     "systems": [],
     "requires": []
   },
-  "esmodules": ["scripts/module.js"],
+  "esmodules": [
+    "scripts/module.js",
+    "scripts/data-model.js",
+    "scripts/sheet.js"
+  ],
   "scripts": [],
   "styles": [],
   "languages": [

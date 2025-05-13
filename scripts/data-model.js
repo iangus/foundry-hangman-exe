@@ -144,4 +144,30 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
       .split()
       .map((char) => (this.guessedCharacters.has(char) ? char : "_"));
   }
+
+  async guess(guess) {
+    const sanitizedGuess = guess.replaceAll(/\W|_|\d/g, "");
+    let correct = false;
+    if (sanitizedGuess.length === 0) {
+      return;
+    } else if (sanitizedGuess.length === 1) {
+      this.guessedCharacters.add(sanitizedGuess);
+      correct = this.targetWord.includes(sanitizedGuess);
+    } else {
+      this.guessedWords.add(sanitizedGuess);
+      correct = this.targetWord === sanitizedGuess;
+    }
+
+    if (!correct) {
+      this.incorrectGuesses += 1;
+    }
+
+    // FIXME should we even await this? or return eagerly with the correct result?
+    await this.parent.update({
+      "system.incorrectGuesses": this.incorrectGuesses,
+      "system.guessedCharacters": this.guessedCharacters,
+      "system.guessedWords": this.guessedWords,
+    });
+    return correct;
+  }
 }

@@ -82,6 +82,7 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
         label: "Target Word",
         gmOnly: true,
         trim: true,
+        initial: "FIXME", // FIXME need some way to configure this before creating the page
       }),
       status: new StringField({
         blank: false,
@@ -103,7 +104,7 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
         }),
         {
           required: true,
-          initial: new Set(),
+          initial: [],
           label: "Guessed Characters",
         }
       ),
@@ -114,7 +115,7 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
         }),
         {
           required: true,
-          initial: new Set(),
+          initial: [],
           label: "Guessed Words",
         }
       ),
@@ -125,6 +126,9 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
    * @override
    */
   prepareBaseData() {
+    this.guessedCharacters = new Set(this.guessedCharacters);
+    this.guessedWords = new Set(this.guessedWords);
+
     if (this.incorrectGuesses >= GameState.length - 1) {
       this.status = GameStatus.Fail;
     } else if (
@@ -165,8 +169,8 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
     // FIXME should we even await this? or return eagerly with the correct result?
     await this.parent.update({
       "system.incorrectGuesses": this.incorrectGuesses,
-      "system.guessedCharacters": this.guessedCharacters,
-      "system.guessedWords": this.guessedWords,
+      "system.guessedCharacters": Array.from(this.guessedCharacters),
+      "system.guessedWords": Array.from(this.guessedWords),
     });
     return correct;
   }

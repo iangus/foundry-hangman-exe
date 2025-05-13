@@ -48,4 +48,12 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
       ),
     };
   }
+
+  prepareDerivedData() {
+    this.wordLength = this.targetWord.length;
+    this.guessCount = this.guessedCharacters.size + this.guessedWords.size;
+    this.display = this.targetWord
+      .split()
+      .map((char) => (this.guessedCharacters.has(char) ? char : "_"));
+  }
 }

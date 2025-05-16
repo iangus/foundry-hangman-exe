@@ -150,7 +150,7 @@ export class HangmanModel extends foundry.abstract.TypeDataModel {
   }
 
   async guess(guess) {
-    const sanitizedGuess = guess.replaceAll(/\W|_|\d/g, "");
+    const sanitizedGuess = guess.replaceAll(/\W|_|\d/g, "").toUpperCase();
     let correct = false;
     if (sanitizedGuess.length === 0) {
       return;

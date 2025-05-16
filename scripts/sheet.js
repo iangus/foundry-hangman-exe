@@ -13,6 +13,8 @@ export class HangmanSheet extends JournalTextPageSheet {
   }
 
   async _updateObject(_, formData) {
-    await this.object.update({ "system.targetWord": formData.targetWord });
+    await this.object.update({
+      "system.targetWord": formData.targetWord.replaceAll(/\W|_|\d/g, ""),
+    });
   }
 }

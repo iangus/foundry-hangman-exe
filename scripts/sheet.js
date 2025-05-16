@@ -5,8 +5,8 @@ export class HangmanSheet extends JournalTextPageSheet {
     }.hbs`;
   }
 
-  getData(options = {}) {
-    const context = super.getData(options);
+  async getData(options = {}) {
+    const context = await super.getData(options);
     context.targetWord = this.object.system.targetWord;
 
     return context;

@@ -1,0 +1,16 @@
+.terminal-container {
+  background-color: #2d2d2d;
+  color: green;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.terminal-container .terminal-output {
+  white-space: pre;
+}
+
+.input-wrapper input {
+  border: none;
+  background: transparent;
+  caret-color: currentColor;
+}
